@@ -4,6 +4,8 @@ const cors = require("cors");
 const mysql = require("mysql2/promise");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -16,7 +18,7 @@ if (!process.env.JWT_SECRET) {
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
-// Aiven MySQL database connection
+// Aiven MySQL connection with CA certificate verification
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT || 25469),
@@ -24,13 +26,13 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   ssl: {
+    ca: fs.readFileSync(path.join(__dirname, "aiven-ca.pem")),
     rejectUnauthorized: true
   },
   waitForConnections: true,
   connectionLimit: 10
 });
 
-// Create JWT token
 function createToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email },
@@ -39,7 +41,6 @@ function createToken(user) {
   );
 }
 
-// Authentication middleware
 function authenticate(req, res, next) {
   const header = req.headers.authorization;
 
@@ -62,7 +63,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// Health check + database check
+// Health check
 app.get("/api/health", async (req, res) => {
   try {
     await db.query("SELECT 1");
@@ -188,7 +189,7 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
-// Get current user's profile
+// Current user's profile
 app.get("/api/auth/me", authenticate, async (req, res) => {
   try {
     const [rows] = await db.execute(
@@ -308,7 +309,7 @@ app.delete("/api/banners/:id", authenticate, async (req, res) => {
   }
 });
 
-// Handle unknown API routes
+// Unknown API routes
 app.use("/api", (req, res) => {
   res.status(404).json({
     message: "API route not found"
