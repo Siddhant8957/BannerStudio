@@ -10,21 +10,27 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET missing in backend/.env");
+  throw new Error("JWT_SECRET missing in backend environment variables");
 }
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
+// Aiven MySQL database connection
 const db = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "bannerstudio",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT || 25469),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: {
+    rejectUnauthorized: true
+  },
   waitForConnections: true,
   connectionLimit: 10
 });
 
+// Create JWT token
 function createToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email },
@@ -33,11 +39,14 @@ function createToken(user) {
   );
 }
 
+// Authentication middleware
 function authenticate(req, res, next) {
   const header = req.headers.authorization;
 
   if (!header || !header.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Please log in first" });
+    return res.status(401).json({
+      message: "Please log in first"
+    });
   }
 
   try {
@@ -47,7 +56,9 @@ function authenticate(req, res, next) {
     );
     next();
   } catch {
-    return res.status(401).json({ message: "Invalid or expired token" });
+    return res.status(401).json({
+      message: "Invalid or expired token"
+    });
   }
 }
 
@@ -55,6 +66,7 @@ function authenticate(req, res, next) {
 app.get("/api/health", async (req, res) => {
   try {
     await db.query("SELECT 1");
+
     res.json({
       status: "ok",
       database: "connected",
@@ -62,6 +74,7 @@ app.get("/api/health", async (req, res) => {
     });
   } catch (error) {
     console.error("Database error:", error.message);
+
     res.status(500).json({
       status: "error",
       database: "disconnected"
@@ -81,7 +94,8 @@ app.post("/api/auth/register", async (req, res) => {
       password.length < 8
     ) {
       return res.status(400).json({
-        message: "Name, valid email and password (at least 8 characters) are required"
+        message:
+          "Name, valid email and password (at least 8 characters) are required"
       });
     }
 
@@ -106,11 +120,15 @@ app.post("/api/auth/register", async (req, res) => {
     });
   } catch (error) {
     if (error.code === "ER_DUP_ENTRY") {
-      return res.status(409).json({ message: "Email is already registered" });
+      return res.status(409).json({
+        message: "Email is already registered"
+      });
     }
 
     console.error("Signup error:", error.message);
-    res.status(500).json({ message: "Could not create account" });
+    res.status(500).json({
+      message: "Could not create account"
+    });
   }
 });
 
@@ -136,28 +154,41 @@ app.post("/api/auth/login", async (req, res) => {
     );
 
     if (!rows.length) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        message: "Invalid email or password"
+      });
     }
 
     const user = rows[0];
-    const matches = await bcrypt.compare(password, user.password_hash);
+    const matches = await bcrypt.compare(
+      password,
+      user.password_hash
+    );
 
     if (!matches) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        message: "Invalid email or password"
+      });
     }
 
     res.json({
       message: "Login successful",
       token: createToken(user),
-      user: { id: user.id, name: user.name, email: user.email }
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }
     });
   } catch (error) {
     console.error("Login error:", error.message);
-    res.status(500).json({ message: "Could not log in" });
+    res.status(500).json({
+      message: "Could not log in"
+    });
   }
 });
 
-// Get the currently logged-in user's profile
+// Get current user's profile
 app.get("/api/auth/me", authenticate, async (req, res) => {
   try {
     const [rows] = await db.execute(
@@ -166,13 +197,17 @@ app.get("/api/auth/me", authenticate, async (req, res) => {
     );
 
     if (!rows.length) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found"
+      });
     }
 
     res.json({ user: rows[0] });
   } catch (error) {
     console.error("Profile error:", error.message);
-    res.status(500).json({ message: "Could not load profile" });
+    res.status(500).json({
+      message: "Could not load profile"
+    });
   }
 });
 
@@ -195,7 +230,7 @@ app.post("/api/banners", authenticate, async (req, res) => {
 
     const [result] = await db.execute(
       `INSERT INTO banners
-       (user_id, shop_name, occasion, offer_text, phone, template_key)
+        (user_id, shop_name, occasion, offer_text, phone, template_key)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
         req.user.id,
@@ -213,7 +248,9 @@ app.post("/api/banners", authenticate, async (req, res) => {
     });
   } catch (error) {
     console.error("Save banner error:", error.message);
-    res.status(500).json({ message: "Could not save banner" });
+    res.status(500).json({
+      message: "Could not save banner"
+    });
   }
 });
 
@@ -232,7 +269,9 @@ app.get("/api/banners", authenticate, async (req, res) => {
     res.json({ banners: rows });
   } catch (error) {
     console.error("List banners error:", error.message);
-    res.status(500).json({ message: "Could not load banners" });
+    res.status(500).json({
+      message: "Could not load banners"
+    });
   }
 });
 
@@ -242,7 +281,9 @@ app.delete("/api/banners/:id", authenticate, async (req, res) => {
     const bannerId = Number(req.params.id);
 
     if (!Number.isInteger(bannerId) || bannerId < 1) {
-      return res.status(400).json({ message: "Invalid banner ID" });
+      return res.status(400).json({
+        message: "Invalid banner ID"
+      });
     }
 
     const [result] = await db.execute(
@@ -251,19 +292,27 @@ app.delete("/api/banners/:id", authenticate, async (req, res) => {
     );
 
     if (!result.affectedRows) {
-      return res.status(404).json({ message: "Banner not found" });
+      return res.status(404).json({
+        message: "Banner not found"
+      });
     }
 
-    res.json({ message: "Banner deleted successfully" });
+    res.json({
+      message: "Banner deleted successfully"
+    });
   } catch (error) {
     console.error("Delete banner error:", error.message);
-    res.status(500).json({ message: "Could not delete banner" });
+    res.status(500).json({
+      message: "Could not delete banner"
+    });
   }
 });
 
 // Handle unknown API routes
 app.use("/api", (req, res) => {
-  res.status(404).json({ message: "API route not found" });
+  res.status(404).json({
+    message: "API route not found"
+  });
 });
 
 app.listen(PORT, () => {
