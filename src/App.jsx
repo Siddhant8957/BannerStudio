@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const API_URL = import.meta.env.VITE_API_URL || 'https://bannerstudio.onrender.com'
 
 const templates = [
   { name: 'Diwali Royal', color: '#761b25', accent: '#ffd778', emoji: '🪔', layout: 'royal', label: 'A FESTIVAL OF LIGHTS', subtitle: 'LIGHT UP YOUR CELEBRATION', font: 'Georgia, serif' },
