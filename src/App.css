@@ -528,3 +528,28 @@ footer span {
     align-items: center;
   }
 }
+
+.category-select {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0 16px;
+  border: 1px solid #66558c;
+  border-radius: 10px;
+  background: #222130;
+  color: #faf8ff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+.category-select:focus {
+  border-color: #aa91ff;
+  box-shadow: 0 0 0 3px #9575ff24;
+}
+
+.category-select option {
+  background: #292838;
+  color: white;
+}

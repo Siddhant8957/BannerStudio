@@ -5,18 +5,54 @@ import './App.css'
 const API_URL = import.meta.env.VITE_API_URL || 'https://bannerstudio.onrender.com'
 
 const templates = [
-  { name: 'Diwali Royal', color: '#761b25', accent: '#ffd778', emoji: '🪔', layout: 'royal', label: 'A FESTIVAL OF LIGHTS', subtitle: 'LIGHT UP YOUR CELEBRATION', font: 'Georgia, serif' },
-  { name: 'Mega Sale', color: '#17265c', accent: '#ffdc38', emoji: '🏷️', layout: 'sale', label: 'BIGGEST DEALS OF THE SEASON', subtitle: 'HURRY! OFFERS YOU CANNOT MISS', font: 'Impact, sans-serif' },
-  { name: 'Fresh Grocery', color: '#155b43', accent: '#e6ff9c', emoji: '🥬', layout: 'fresh', label: 'FRESHNESS EVERY DAY', subtitle: 'QUALITY YOU CAN TRUST', font: 'Trebuchet MS, sans-serif' },
-  { name: 'Fashion Boutique', color: '#642e50', accent: '#ffd6e9', emoji: '👗', layout: 'fashion', label: 'THE NEW COLLECTION', subtitle: 'STYLE THAT SPEAKS FOR YOU', font: 'Georgia, serif' },
-  { name: 'Sweets & Bakery', color: '#853c1e', accent: '#ffe2a1', emoji: '🍰', layout: 'bakery', label: 'MADE WITH LOVE', subtitle: 'SWEET MOMENTS, SWEETER SAVINGS', font: 'Georgia, serif' },
-  { name: 'Mobile & Tech', color: '#102e49', accent: '#63f3e4', emoji: '📱', layout: 'tech', label: 'UPGRADE YOUR WORLD', subtitle: 'SMART DEALS. SMART CHOICES.', font: 'Arial, sans-serif' },
-  { name: 'Eid Celebration', color: '#064d40', accent: '#f2d58b', emoji: '🌙', layout: 'eid', label: 'EID MUBARAK', subtitle: 'WISHING YOU JOY AND PROSPERITY', font: 'Georgia, serif' },
-  { name: 'Holi Colours', color: '#76245e', accent: '#ffdf55', emoji: '🎨', layout: 'holi', label: 'CELEBRATE EVERY COLOUR', subtitle: 'COLOUR YOUR DAY WITH SAVINGS', font: 'Impact, sans-serif' },
-  { name: 'New Arrival', color: '#24252d', accent: '#f3b66d', emoji: '✨', layout: 'arrival', label: 'JUST ARRIVED', subtitle: 'DISCOVER SOMETHING NEW', font: 'Arial, sans-serif' },
-  { name: 'Buy 1 Get 1', color: '#80322c', accent: '#fff0c4', emoji: '🎁', layout: 'bogo', label: 'MORE VALUE FOR YOU', subtitle: 'DOUBLE THE JOY, DOUBLE THE SAVINGS', font: 'Impact, sans-serif' },
-  { name: 'Clearance Sale', color: '#34323a', accent: '#ffb3a7', emoji: '🔥', layout: 'clearance', label: 'FINAL MARKDOWN', subtitle: 'LAST CHANCE TO GRAB YOUR FAVOURITES', font: 'Arial Black, Arial, sans-serif' },
-  { name: 'Grand Opening', color: '#233c70', accent: '#ffe0a1', emoji: '🎉', layout: 'opening', label: 'WE ARE OPEN!', subtitle: 'COME CELEBRATE WITH US', font: 'Georgia, serif' },
+  { name: 'Diwali Royal', category: 'Diwali', color: '#761b25', accent: '#ffd778', emoji: '🪔', layout: 'royal', label: 'A FESTIVAL OF LIGHTS', subtitle: 'LIGHT UP YOUR CELEBRATION', font: 'Georgia, serif' },
+  { name: 'Mega Sale', category: 'General', color: '#17265c', accent: '#ffdc38', emoji: '🏷️', layout: 'sale', label: 'BIGGEST DEALS OF THE SEASON', subtitle: 'HURRY! OFFERS YOU CANNOT MISS', font: 'Impact, sans-serif' },
+  { name: 'Fresh Grocery', category: 'General', color: '#155b43', accent: '#e6ff9c', emoji: '🥬', layout: 'fresh', label: 'FRESHNESS EVERY DAY', subtitle: 'QUALITY YOU CAN TRUST', font: 'Trebuchet MS, sans-serif' },
+  { name: 'Fashion Boutique', category: 'General', color: '#642e50', accent: '#ffd6e9', emoji: '👗', layout: 'fashion', label: 'THE NEW COLLECTION', subtitle: 'STYLE THAT SPEAKS FOR YOU', font: 'Georgia, serif' },
+  { name: 'Sweets & Bakery', category: 'General', color: '#853c1e', accent: '#ffe2a1', emoji: '🍰', layout: 'bakery', label: 'MADE WITH LOVE', subtitle: 'SWEET MOMENTS, SWEETER SAVINGS', font: 'Georgia, serif' },
+  { name: 'Mobile & Tech', category: 'General', color: '#102e49', accent: '#63f3e4', emoji: '📱', layout: 'tech', label: 'UPGRADE YOUR WORLD', subtitle: 'SMART DEALS. SMART CHOICES.', font: 'Arial, sans-serif' },
+  { name: 'Eid Celebration', category: 'Eid', color: '#064d40', accent: '#f2d58b', emoji: '🌙', layout: 'eid', label: 'EID MUBARAK', subtitle: 'WISHING YOU JOY AND PROSPERITY', font: 'Georgia, serif' },
+  { name: 'Holi Colours', category: 'Holi', color: '#76245e', accent: '#ffdf55', emoji: '🎨', layout: 'holi', label: 'CELEBRATE EVERY COLOUR', subtitle: 'COLOUR YOUR DAY WITH SAVINGS', font: 'Impact, sans-serif' },
+  { name: 'New Arrival', category: 'General', color: '#24252d', accent: '#f3b66d', emoji: '✨', layout: 'arrival', label: 'JUST ARRIVED', subtitle: 'DISCOVER SOMETHING NEW', font: 'Arial, sans-serif' },
+  { name: 'Buy 1 Get 1', category: 'General', color: '#80322c', accent: '#fff0c4', emoji: '🎁', layout: 'bogo', label: 'MORE VALUE FOR YOU', subtitle: 'DOUBLE THE JOY, DOUBLE THE SAVINGS', font: 'Impact, sans-serif' },
+  { name: 'Clearance Sale', category: 'General', color: '#34323a', accent: '#ffb3a7', emoji: '🔥', layout: 'clearance', label: 'FINAL MARKDOWN', subtitle: 'LAST CHANCE TO GRAB YOUR FAVOURITES', font: 'Arial Black, Arial, sans-serif' },
+  { name: 'Grand Opening', category: 'General', color: '#233c70', accent: '#ffe0a1', emoji: '🎉', layout: 'opening', label: 'WE ARE OPEN!', subtitle: 'COME CELEBRATE WITH US', font: 'Georgia, serif' },
+
+  { name: 'Diwali Golden Night', category: 'Diwali', color: '#4c1b16', accent: '#ffd166', emoji: '🪔', layout: 'diwali-gold', label: 'HAPPY DIWALI', subtitle: 'A GOLDEN CELEBRATION OF LIGHTS', font: 'Georgia, serif' },
+  { name: 'Diwali Celebration', category: 'Diwali', color: '#792b16', accent: '#ffe29a', emoji: '✨', layout: 'diwali-celebration', label: 'CELEBRATE THE FESTIVAL', subtitle: 'LIGHTS, HAPPINESS AND GREAT OFFERS', font: 'Georgia, serif' },
+  { name: 'Dhanteras Special', category: 'Dhanteras', color: '#67400b', accent: '#ffe08a', emoji: '🪙', layout: 'dhanteras', label: 'DHANTERAS SPECIAL', subtitle: 'PROSPERITY AND HAPPINESS FOR ALL', font: 'Georgia, serif' },
+  { name: 'Choti Diwali', category: 'Choti Diwali', color: '#762b21', accent: '#ffc66d', emoji: '🪔', layout: 'choti-diwali', label: 'HAPPY CHOTI DIWALI', subtitle: 'SPREAD LIGHT AND JOY', font: 'Georgia, serif' },
+  { name: 'Govardhan Puja', category: 'Govardhan Puja', color: '#28512e', accent: '#f3d28b', emoji: '🌿', layout: 'govardhan', label: 'GOVARDHAN PUJA', subtitle: 'MAY YOUR HOME BE BLESSED WITH HAPPINESS', font: 'Georgia, serif' },
+  { name: 'Bhai Dooj', category: 'Bhai Dooj', color: '#67284a', accent: '#ffd3a1', emoji: '💝', layout: 'bhai-dooj', label: 'HAPPY BHAI DOOJ', subtitle: 'CELEBRATING THE BOND OF LOVE', font: 'Georgia, serif' },
+
+  { name: 'Holi Dhamaka', category: 'Holi', color: '#a51e62', accent: '#ffe65c', emoji: '🌈', layout: 'holi-dhamaka', label: 'HOLI DHAMAKA', subtitle: 'ADD COLOURS TO YOUR CELEBRATION', font: 'Impact, sans-serif' },
+  { name: 'Raksha Bandhan', category: 'Raksha Bandhan', color: '#81344e', accent: '#ffd6a1', emoji: '🎀', layout: 'raksha-bandhan', label: 'HAPPY RAKSHA BANDHAN', subtitle: 'A BOND OF LOVE FOREVER', font: 'Georgia, serif' },
+  { name: 'Janmashtami', category: 'Janmashtami', color: '#183d72', accent: '#ffe08b', emoji: '🦚', layout: 'janmashtami', label: 'HAPPY JANMASHTAMI', subtitle: 'CELEBRATE THE BIRTH OF LORD KRISHNA', font: 'Georgia, serif' },
+  { name: 'Ganesh Chaturthi', category: 'Ganesh Chaturthi', color: '#8b391e', accent: '#ffd58b', emoji: '🐘', layout: 'ganesh', label: 'GANPATI BAPPA MORYA', subtitle: 'MAY LORD GANESHA BLESS YOUR HOME', font: 'Georgia, serif' },
+  { name: 'Navratri', category: 'Navratri', color: '#711c38', accent: '#ffcf69', emoji: '💃', layout: 'navratri', label: 'HAPPY NAVRATRI', subtitle: 'NINE NIGHTS OF JOY AND CELEBRATION', font: 'Georgia, serif' },
+  { name: 'Dussehra', category: 'Dussehra', color: '#8c321d', accent: '#ffe08b', emoji: '🏹', layout: 'dussehra', label: 'HAPPY DUSSEHRA', subtitle: 'CELEBRATING THE VICTORY OF GOOD', font: 'Georgia, serif' },
+  { name: 'Christmas', category: 'Christmas', color: '#15533c', accent: '#ffe3a2', emoji: '🎄', layout: 'christmas', label: 'MERRY CHRISTMAS', subtitle: 'SEASON OF JOY AND GIVING', font: 'Georgia, serif' },
+  { name: 'New Year', category: 'New Year', color: '#172d55', accent: '#ffe078', emoji: '🎆', layout: 'new-year', label: 'HAPPY NEW YEAR', subtitle: 'NEW YEAR. NEW HOPES. NEW OFFERS.', font: 'Georgia, serif' },
+  { name: 'Makar Sankranti', category: 'Makar Sankranti', color: '#24537b', accent: '#ffe18a', emoji: '🪁', layout: 'makar-sankranti', label: 'HAPPY MAKAR SANKRANTI', subtitle: 'LET YOUR HAPPINESS SOAR HIGH', font: 'Georgia, serif' },
+  { name: 'Pongal', category: 'Pongal', color: '#7a3c1b', accent: '#ffe1a1', emoji: '🌾', layout: 'pongal', label: 'HAPPY PONGAL', subtitle: 'CELEBRATING HARVEST AND HAPPINESS', font: 'Georgia, serif' },
+  { name: 'Onam', category: 'Onam', color: '#315b36', accent: '#ffe0a0', emoji: '🌼', layout: 'onam', label: 'HAPPY ONAM', subtitle: 'WISHING YOU A PROSPEROUS ONAM', font: 'Georgia, serif' },
+  { name: 'Karwa Chauth', category: 'Karwa Chauth', color: '#712b43', accent: '#ffd5a1', emoji: '🌕', layout: 'karwa-chauth', label: 'HAPPY KARWA CHAUTH', subtitle: 'CELEBRATING LOVE AND TOGETHERNESS', font: 'Georgia, serif' },
+  { name: 'Independence Day', category: 'Independence Day', color: '#174b37', accent: '#ffdc9b', emoji: '🇮🇳', layout: 'independence', label: 'HAPPY INDEPENDENCE DAY', subtitle: 'CELEBRATING THE SPIRIT OF FREEDOM', font: 'Georgia, serif' },
+  { name: 'Republic Day', category: 'Republic Day', color: '#173d65', accent: '#ffdc9b', emoji: '🇮🇳', layout: 'republic', label: 'HAPPY REPUBLIC DAY', subtitle: 'PRIDE, UNITY AND PROGRESS', font: 'Georgia, serif' },
+
+  { name: 'Daily Offers', category: 'General', color: '#174c50', accent: '#b9f5d5', emoji: '🛍️', layout: 'daily-offers', label: 'TODAY\'S SPECIAL', subtitle: 'GREAT DEALS EVERY SINGLE DAY', font: 'Arial, sans-serif' },
+  { name: 'Grand Opening Special', category: 'General', color: '#4a286d', accent: '#ffdb91', emoji: '🎊', layout: 'grand-opening-special', label: 'GRAND OPENING SPECIAL', subtitle: 'A NEW BEGINNING. A SPECIAL OFFER.', font: 'Georgia, serif' },
+  { name: 'New Collection', category: 'General', color: '#563047', accent: '#ffd4a8', emoji: '🛍️', layout: 'new-collection', label: 'INTRODUCING OUR NEW COLLECTION', subtitle: 'FRESH STYLES. FRESH LOOKS.', font: 'Georgia, serif' },
+  { name: 'Special Discount', category: 'General', color: '#812b25', accent: '#ffe08a', emoji: '💥', layout: 'special-discount', label: 'SPECIAL DISCOUNT', subtitle: 'EXCLUSIVE SAVINGS JUST FOR YOU', font: 'Impact, sans-serif' },
+]
+
+const categories = [
+  'All Templates', 'Diwali', 'Dhanteras', 'Choti Diwali',
+  'Govardhan Puja', 'Bhai Dooj', 'Holi', 'Raksha Bandhan',
+  'Janmashtami', 'Ganesh Chaturthi', 'Navratri', 'Dussehra',
+  'Eid', 'Christmas', 'New Year', 'Makar Sankranti',
+  'Pongal', 'Onam', 'Karwa Chauth', 'Independence Day',
+  'Republic Day', 'General',
 ]
 
 function App() {
@@ -25,6 +61,7 @@ function App() {
   const [occasion, setOccasion] = useState('Grand Festive Sale')
   const [phone, setPhone] = useState('')
   const [selected, setSelected] = useState(0)
+  const [category, setCategory] = useState('All Templates')
 
   const [token, setToken] = useState(
     () => localStorage.getItem('bannerstudio_token') || ''
@@ -39,7 +76,14 @@ function App() {
   const [busy, setBusy] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
 
+  // Selected saved banner for the View popup
+  const [viewBanner, setViewBanner] = useState(null)
+
   const template = templates[selected]
+  const filteredTemplates = category === 'All Templates'
+    ? templates
+    : templates.filter((item) => item.category === category)
+
   const isSale = ['sale', 'holi', 'bogo', 'clearance'].includes(template.layout)
   const isElegant = ['royal', 'fashion', 'bakery', 'eid'].includes(template.layout)
 
@@ -183,9 +227,14 @@ function App() {
       (item) => item.layout === banner.template_key
     )
 
-    if (index >= 0) setSelected(index)
+    if (index >= 0) {
+      setSelected(index)
+      setCategory(templates[index].category || 'All Templates')
+    }
 
     setMessage('Saved banner editor mein load ho gaya.')
+    setAccountOpen(false)
+    setViewBanner(null)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -208,6 +257,7 @@ function App() {
     setHistory([])
     setMessage('Logout successful.')
     setAccountOpen(false)
+    setViewBanner(null)
   }
 
   function downloadPoster() {
@@ -308,6 +358,18 @@ function App() {
     }
   }
 
+  function changeCategory(value) {
+    setCategory(value)
+
+    const firstTemplateIndex = templates.findIndex(
+      (item) => value === 'All Templates' || item.category === value
+    )
+
+    if (firstTemplateIndex >= 0) {
+      setSelected(firstTemplateIndex)
+    }
+  }
+
   return (
     <main className="app">
       <header className="topbar">
@@ -377,9 +439,17 @@ function App() {
                       <p style={{ fontSize: '12px', opacity: 0.7 }}>
                         Template: {templates.find((item) => item.layout === banner.template_key)?.name || banner.template_key}
                       </p>
+
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                        <button type="button" onClick={() => loadBanner(banner)}>Load</button>
-                        <button type="button" onClick={() => deleteBanner(banner.id)}>Delete</button>
+                        <button type="button" onClick={() => setViewBanner(banner)}>
+                          View
+                        </button>
+                        <button type="button" onClick={() => loadBanner(banner)}>
+                          Load
+                        </button>
+                        <button type="button" onClick={() => deleteBanner(banner.id)}>
+                          Delete
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -451,6 +521,130 @@ function App() {
         </section>
       )}
 
+      {/* Saved banner View popup */}
+      {viewBanner && (() => {
+        const viewedTemplate =
+          templates.find((item) => item.layout === viewBanner.template_key) || templates[0]
+
+        return (
+          <div
+            onClick={() => setViewBanner(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              background: 'rgba(0, 0, 0, 0.88)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '20px',
+              overflowY: 'auto',
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#211e2a',
+                border: '1px solid #494052',
+                borderRadius: '14px',
+                padding: '20px',
+                width: '100%',
+                maxWidth: '480px',
+                color: '#fff',
+                textAlign: 'center',
+                margin: 'auto',
+              }}
+            >
+              <h2 style={{ marginTop: 0 }}>Saved Banner Preview</h2>
+
+              <div
+                style={{
+                  background: `radial-gradient(ellipse at top, ${viewedTemplate.color} 0%, #15131e 100%)`,
+                  color: viewedTemplate.accent,
+                  padding: '12px',
+                  borderRadius: '8px',
+                  aspectRatio: '3 / 4',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  fontFamily: viewedTemplate.font,
+                }}
+              >
+                <div
+                  style={{
+                    border: `3px double ${viewedTemplate.accent}`,
+                    width: '100%',
+                    height: '100%',
+                    padding: '8%',
+                    boxSizing: 'border-box',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  <div style={{ fontSize: '32px' }}>{viewedTemplate.emoji}</div>
+                  <strong>{viewedTemplate.label}</strong>
+
+                  <h2 style={{
+                    color: '#fff',
+                    fontSize: 'clamp(20px, 5vw, 32px)',
+                    overflowWrap: 'anywhere',
+                  }}>
+                    {viewBanner.shop_name || 'YOUR SHOP NAME'}
+                  </h2>
+
+                  <div style={{
+                    background: viewedTemplate.accent,
+                    color: viewedTemplate.color,
+                    padding: '12px',
+                    fontSize: 'clamp(18px, 5vw, 30px)',
+                    fontWeight: 900,
+                    borderRadius: '8px',
+                    maxWidth: '100%',
+                    overflowWrap: 'anywhere',
+                  }}>
+                    {viewBanner.offer_text || 'YOUR OFFER'}
+                  </div>
+
+                  <strong>{viewBanner.occasion || 'YOUR CAMPAIGN'}</strong>
+                  <p>{viewedTemplate.subtitle}</p>
+
+                  <small>
+                    {viewBanner.phone
+                      ? `CALL / WHATSAPP: ${viewBanner.phone}`
+                      : 'VISIT US TODAY'}
+                  </small>
+                </div>
+              </div>
+
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '10px',
+                flexWrap: 'wrap',
+                marginTop: '16px',
+              }}>
+                <button
+                  type="button"
+                  onClick={() => loadBanner(viewBanner)}
+                >
+                  Load in Editor
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setViewBanner(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
+
       <section className="intro">
         <span className="eyebrow">YOUR BUSINESS, BEAUTIFULLY PROMOTED</span>
         <h2>Make every offer <span>unmissable.</span></h2>
@@ -483,25 +677,41 @@ function App() {
             <span className="step">02</span>
             <div>
               <h3>Choose your design</h3>
-              <p>12 different layouts and styles.</p>
+              <p>{templates.length} different templates and styles.</p>
             </div>
           </div>
 
-          <div className="template-list">
-            {templates.map((item, index) => (
-              <button
-                key={item.name}
-                className={`template-option ${selected === index ? 'active' : ''}`}
-                onClick={() => setSelected(index)}
-                type="button"
-              >
-                <span className="template-swatch" style={{ background: item.color, color: item.accent }}>
-                  {item.emoji}
-                </span>
-                <span>{item.name}</span>
-                <span className="radio-dot">{selected === index ? '✓' : ''}</span>
-              </button>
+          <label htmlFor="template-category">Choose template category</label>
+          <select
+            id="template-category"
+            className="category-select"
+            value={category}
+            onChange={(e) => changeCategory(e.target.value)}
+          >
+            {categories.map((item) => (
+              <option key={item} value={item}>{item}</option>
             ))}
+          </select>
+
+          <div className="template-list">
+            {filteredTemplates.map((item) => {
+              const index = templates.indexOf(item)
+
+              return (
+                <button
+                  key={item.name}
+                  className={`template-option ${selected === index ? 'active' : ''}`}
+                  onClick={() => setSelected(index)}
+                  type="button"
+                >
+                  <span className="template-swatch" style={{ background: item.color, color: item.accent }}>
+                    {item.emoji}
+                  </span>
+                  <span>{item.name}</span>
+                  <span className="radio-dot">{selected === index ? '✓' : ''}</span>
+                </button>
+              )
+            })}
           </div>
 
           <button className="download-button" onClick={saveBanner} type="button" disabled={busy}>
@@ -671,7 +881,7 @@ function App() {
                 fontSize: 'clamp(8px, 1.3vw, 10px)',
                 letterSpacing: '1px',
               }}>
-                {template.layout === 'opening'
+                {template.layout === 'opening' || template.layout === 'grand-opening-special'
                   ? 'WE LOOK FORWARD TO SEEING YOU'
                   : template.layout === 'eid'
                     ? 'EID MUBARAK • WITH BEST WISHES'
